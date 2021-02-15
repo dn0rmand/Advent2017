@@ -12,11 +12,38 @@ class Day4: Day {
 	
 	override func part1() -> String
 	{
-		return "0"
+		var total = 0
+		for phrase in input {
+			var used = Set<Substring>()
+			var valid = true
+			for word in phrase.split(separator: " ") {
+				if used.contains(word) {
+					valid = false
+					break
+				}
+				used.insert(word)
+			}
+			if valid { total += 1 }
+		}
+		return "\(total)"
 	}
 	
 	override func part2() -> String
 	{
-		return "0"
+		var total = 0
+		for phrase in input {
+			var used = Set<String>()
+			var valid = true
+			for word in phrase.split(separator: " ") {
+				let anagram = String(word.sorted())
+				if used.contains(anagram) {
+					valid = false
+					break
+				}
+				used.insert(anagram)
+			}
+			if valid { total += 1 }
+		}
+		return "\(total)"
 	}
 }
