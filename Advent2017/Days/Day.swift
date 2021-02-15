@@ -26,7 +26,11 @@ class Day {
 	func part1() -> String { return "Part 1 Not Implemented" }
 	func part2() -> String { return "Part 2 Not Implemented" }
 	
+	func reset() { }
+	
 	func execute(output: ContentView) {
+		reset()
+		
 		let d = getDay()
 		
 		output.Clear()

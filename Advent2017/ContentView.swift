@@ -38,22 +38,21 @@ let days: [Day] = [
 
 struct ContentView: View {
 	@State var text = ""
+	@State var running = false
 	
     var body: some View {
 		VStack {
-			GridStack(minCellWidth: 67,
-					  spacing: 0,
-					  numItems: 25) {
+			GridStack(minCellWidth: 67, spacing: 0, numItems: 25) {
 				index, cellWidth in
 				Button("Day \(index+1)",
-					   action: { days[index].execute(output: self) })
+					   action: { executeDay(index: index) })
 					.frame(width: cellWidth, height: 32)
-		   }
+					.disabled(running)
+			}
 			Text(text)
-			.id("Results")
-				  .lineLimit(1000)
-				  .padding(10)
-				  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+			  .lineLimit(1000)
+			  .padding(10)
+			  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 		}
     }
 	
@@ -62,10 +61,29 @@ struct ContentView: View {
 	}
 	
 	func Print(message: String) {
-		if text.count == 0 {
-			text = message
+		if Thread.isMainThread {
+			if text.count == 0 {
+				text = message
+			} else {
+				text = text + "\n" + message
+			}
 		} else {
-			text = text + "\n" + message
+			DispatchQueue.main.sync { Print(message: message) }
+		}
+	}
+	
+	func executeDay(index: Int) {
+		running = true
+		
+		let group = DispatchGroup()
+				
+		group.enter()
+		DispatchQueue.global().async {
+			days[index].execute(output: self)
+			group.leave()
+		}
+		group.notify(queue: .main) {
+			running = false
 		}
 	}
 }

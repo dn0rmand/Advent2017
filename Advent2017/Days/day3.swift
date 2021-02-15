@@ -60,12 +60,15 @@ class Day3: Day {
 		return v
 	}
 	
+	override func reset()
+	{
+		_spiral.removeAll()
+	}
+	
 	override func part2() -> String
 	{
 		let target = inputValue
 		
-		// reset :)
-		_spiral.removeAll()
 		setSpiralValue(x: 0, y: 0, value: 1)
 		
 		var minX = -1, maxX = 1, minY = -1, maxY = 1
