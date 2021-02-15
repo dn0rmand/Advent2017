@@ -36,26 +36,48 @@ let days: [Day] = [
 	Day25.init(),
 ]
 
+struct TintOverlay: View {
+  var body: some View {
+	ZStack {
+	  Text(" ")
+	}
+	.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+	.background(Color.black)
+  }
+}
+
 struct ContentView: View {
 	@State var text = ""
 	@State var running = false
 	
     var body: some View {
-		VStack {
-			GridStack(minCellWidth: 67, spacing: 0, numItems: 25) {
-				index, cellWidth in
-				Button("Day \(index+1)",
-					   action: { executeDay(index: index) })
-					.frame(width: cellWidth, height: 32)
-					.disabled(running)
+		GeometryReader { geometry in
+			ZStack {
+				Image("background")
+				  .resizable()
+				  .aspectRatio(geometry.size, contentMode: .fit)
+				  .overlay(TintOverlay().opacity(0.5))
+				  .edgesIgnoringSafeArea(.all)
+				VStack {
+					GridStack(minCellWidth: 67, spacing: 0, numItems: 25) {
+						index, cellWidth in
+						Button("Day \(index+1)",
+							   action: { executeDay(index: index) })
+							.frame(width: cellWidth, height: 32)
+							.disabled(running)
+					}
+					.frame(idealWidth: 500, maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, minHeight: 100, idealHeight: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/, maxHeight:100, alignment: .topLeading)
+				Text(text)
+				  .lineLimit(1000)
+				  .padding(10)
+				  .background(Color.clear)
+				  .foregroundColor(.white)
+				  .frame(minWidth: geometry.size.width, maxWidth: geometry.size.width, maxHeight: .infinity, alignment: .topLeading)
+				}
 			}
-			Text(text)
-			  .lineLimit(1000)
-			  .padding(10)
-			  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 		}
-    }
-	
+	}
+
 	func Clear() {
 		text = ""
 	}
@@ -90,6 +112,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+		Group {
+			ContentView()
+			ContentView()
+		}
     }
 }
