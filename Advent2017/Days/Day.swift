@@ -33,9 +33,32 @@ class Day {
 		output.Print(message: "--- Day \(d) ---")
 		output.Print(message: "")
 		
+		let startTime = CACurrentMediaTime()
 		let p1 = self.part1();
 		output.Print(message:"Answer to part1 is \(p1)")
 		let p2 = self.part2();
 		output.Print(message:"Answer to part1 is \(p2)")
+		var timeElapsed = Int((CACurrentMediaTime() - startTime) * 1000000) // in μs
+		
+		let μs      = timeElapsed % 1000
+		timeElapsed = (timeElapsed - μs) / 1000
+		let ms 		= timeElapsed % 1000
+		timeElapsed = (timeElapsed - ms) / 1000
+		let seconds = timeElapsed % 60
+		timeElapsed = (timeElapsed - seconds) / 60
+		let minutes = timeElapsed % 60
+		timeElapsed = (timeElapsed - minutes) / 60
+		let hours 	= timeElapsed
+
+		var format = ""
+		if hours > 0 { format = "\(hours) hours" }
+		if minutes > 0 { format = "\(format) \(minutes) minutes" }
+		if seconds > 0 { format = "\(format) \(seconds) seconds" }
+		if ms > 0 { format = "\(format) \(ms) ms" }
+		if μs > 0 { format = "\(format) \(μs) μs" }
+		
+		if format.count == 0 { format = "so very fast!" }
+		
+		output.Print(message: "Executed in \(format)")
 	}
 }
