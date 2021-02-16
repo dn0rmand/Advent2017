@@ -41,7 +41,7 @@ class Day {
 		let p1 = self.part1();
 		output.Print(message:"Answer to part1 is \(p1)")
 		let p2 = self.part2();
-		output.Print(message:"Answer to part1 is \(p2)")
+		output.Print(message:"Answer to part2 is \(p2)")
 		var timeElapsed = Int((CACurrentMediaTime() - startTime) * 1000000) // in μs
 		
 		let μs      = timeElapsed % 1000
