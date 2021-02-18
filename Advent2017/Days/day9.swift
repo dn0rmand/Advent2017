@@ -10,13 +10,69 @@ import Foundation
 class Day9: Day {
 	override func getDay() -> Int { return 9 }
 	
+	var garbageSize = 0;
+	
+	func ignoreGarbage(input: String, index: String.Index) -> String.Index
+	{
+		assert(input[index] == "<")
+		var pos = input.index(index, offsetBy: 1)
+		while input[pos] != ">" {
+			if input[pos] == "!" {
+				pos = input.index(pos, offsetBy: 2)
+			} else {
+				garbageSize += 1
+				pos = input.index(pos, offsetBy: 1)
+			}
+		}
+		
+		pos = input.index(pos, offsetBy: 1)
+		return pos
+	}
+	
+	func getGroupScore(data: String, index: String.Index, value: Int) -> (String.Index, Int)
+	{
+		assert(data[index] == "{")
+		var pos = data.index(index, offsetBy: 1)
+		
+		var score = value
+		var c = data[pos]
+
+		while c != "}" {
+			if c == "{" {
+				let (newPos, subScore) = getGroupScore(data: data, index: pos, value: value+1)
+				score += subScore
+				pos = newPos
+			} else if c == "<" {
+				pos = ignoreGarbage(input: data, index: pos)
+			} else if c == "," {
+				pos = data.index(pos, offsetBy: 1)
+			} else {
+				assert(false, "Invalid data")
+			}
+			
+			c = data[pos]
+		}
+		
+		pos = data.index(pos, offsetBy: 1)
+		return (pos, score)
+	}
+	
+	override func reset() {
+		garbageSize = 0
+	}
+	
 	override func part1() -> String
 	{
-		return "0"
+		let data = input[0]
+		let (_, score) = self.getGroupScore(data: data, index: data.startIndex, value: 1)
+		return "\(score)"
 	}
 	
 	override func part2() -> String
 	{
-		return "0"
+		if garbageSize == 0 {
+			_ = part1()
+		}
+		return "\(garbageSize)"
 	}
 }

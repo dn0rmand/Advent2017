@@ -9,17 +9,21 @@ import Foundation
 import SwiftUI
 
 class Day {
-	private var _input: [String]? = nil
+	lazy var input: [String] = {
+		return getDayInput(day: self.getDay())
+	}()
 	
-	var input: [String] {
-		get {
-			if self._input == nil {
-				self._input = getDayInput(day: self.getDay())
+	lazy var items: [String] = {
+		var _items = [String]()
+		
+		for line in input {
+			for item in line.split(separator: ",") {
+				_items.append(String(item.trimmingCharacters(in: .whitespaces)))
 			}
-			
-			return self._input!
 		}
-	}
+		
+		return _items
+	}()
 	
 	func getDay() ->Int { return 0 }
 	

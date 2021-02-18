@@ -14,13 +14,25 @@ func getDayInput(day: Int) -> [String] {
 	if let fileUrl = Bundle.main.url(forResource: fileName, withExtension: "txt", subdirectory: "data") {
 		if let fileContent = try? String(contentsOf: fileUrl) {
 			for line in fileContent.split(separator: "\n") {
-				let line2 = line.trimmingCharacters(in: CharacterSet.whitespaces)
+				let line2 = line.trimmingCharacters(in: .whitespaces)
 				lines.append(line2)
 			}
 		}
 	}
 	
 	return lines
+}
+
+func getDayItems(day: Int, separator: Character) -> [String] {
+	var items = [String]()
+	
+	for line in getDayInput(day: day) {
+		for item in line.split(separator: separator) {
+			items.append(String(item.trimmingCharacters(in: .whitespaces)))
+		}
+	}
+	
+	return items
 }
 
 class Parser {

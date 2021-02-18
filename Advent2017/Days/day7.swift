@@ -50,7 +50,7 @@ class Day7: Day {
 								.dropFirst()
 								.split(separator: ",")
 								.map {
-									let name = String($0.trimmingCharacters(in: CharacterSet.whitespaces))
+									let name = String($0.trimmingCharacters(in: .whitespaces))
 									var p = programs[name]
 									if p == nil {
 										// use place holder
@@ -61,7 +61,7 @@ class Day7: Day {
 			}
 			
 			let entries2 = entries[0].split(separator: "(")
-			let name 	 = String(entries2[0].trimmingCharacters(in: CharacterSet.whitespaces))
+			let name 	 = String(entries2[0].trimmingCharacters(in: .whitespaces))
 			let weight 	 = Int(String(entries2[1].split(separator: ")")[0]))!
 			
 			let p = Program(name: name, weight: weight, children: children)
