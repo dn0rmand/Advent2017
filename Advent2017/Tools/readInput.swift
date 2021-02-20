@@ -50,6 +50,11 @@ class Parser {
 		}
 	}
 	
+	func EOF() -> Bool {
+		skipWhiteSpaces()
+		return pos >= input.endIndex
+	}
+	
 	func getToken() -> String {
 		skipWhiteSpaces()
 		assert(pos < input.endIndex)
