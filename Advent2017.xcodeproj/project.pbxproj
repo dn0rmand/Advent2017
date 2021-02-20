@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		89C881F025E179C5006D0715 /* knotHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C881EF25E179C5006D0715 /* knotHash.swift */; };
 		89ED1D5925D98D76008DE188 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED1D5825D98D76008DE188 /* App.swift */; };
 		89ED1D5B25D98D76008DE188 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED1D5A25D98D76008DE188 /* ContentView.swift */; };
 		89ED1D5D25D98D77008DE188 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89ED1D5C25D98D77008DE188 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		89C881EF25E179C5006D0715 /* knotHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = knotHash.swift; sourceTree = "<group>"; };
 		89ED1D5525D98D76008DE188 /* Advent of Code 2017.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Advent of Code 2017.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89ED1D5825D98D76008DE188 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		89ED1D5A25D98D76008DE188 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				89ED1D7025D99080008DE188 /* readInput.swift */,
+				89C881EF25E179C5006D0715 /* knotHash.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				89ED1DB825DA2A4A008DE188 /* day3.swift in Sources */,
 				89ED1DBA25DA2A4A008DE188 /* day13.swift in Sources */,
 				89ED1DBC25DA2A4A008DE188 /* day11.swift in Sources */,
+				89C881F025E179C5006D0715 /* knotHash.swift in Sources */,
 				89ED1DAC25DA2A4A008DE188 /* day14.swift in Sources */,
 				89ED1DA925DA2A4A008DE188 /* day9.swift in Sources */,
 				89ED1D5925D98D76008DE188 /* App.swift in Sources */,
