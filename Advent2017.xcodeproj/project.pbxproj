@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		896A687325EB02E600A4A04C /* Duet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896A687225EB02E600A4A04C /* Duet.swift */; };
 		89C881F025E179C5006D0715 /* knotHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C881EF25E179C5006D0715 /* knotHash.swift */; };
 		89ED1D5925D98D76008DE188 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED1D5825D98D76008DE188 /* App.swift */; };
 		89ED1D5B25D98D76008DE188 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89ED1D5A25D98D76008DE188 /* ContentView.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		896A687225EB02E600A4A04C /* Duet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duet.swift; sourceTree = "<group>"; };
 		89C881EF25E179C5006D0715 /* knotHash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = knotHash.swift; sourceTree = "<group>"; };
 		89ED1D5525D98D76008DE188 /* Advent of Code 2017.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Advent of Code 2017.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89ED1D5825D98D76008DE188 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 			children = (
 				89ED1D7025D99080008DE188 /* readInput.swift */,
 				89C881EF25E179C5006D0715 /* knotHash.swift */,
+				896A687225EB02E600A4A04C /* Duet.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				89ED1DAE25DA2A4A008DE188 /* day15.swift in Sources */,
 				89ED1DB025DA2A4A008DE188 /* day19.swift in Sources */,
 				89ED1DB425DA2A4A008DE188 /* day16.swift in Sources */,
+				896A687325EB02E600A4A04C /* Duet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

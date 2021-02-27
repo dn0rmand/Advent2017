@@ -55,6 +55,14 @@ class Parser {
 		return pos >= input.endIndex
 	}
 	
+	func Peek() -> Character {
+		skipWhiteSpaces()
+		if EOF() {
+			return "\0"
+		} else {
+			return input[pos]
+		}
+	}
 	func getToken() -> String {
 		skipWhiteSpaces()
 		assert(pos < input.endIndex)
