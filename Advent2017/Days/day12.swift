@@ -65,7 +65,7 @@ class Day12: Day {
 			
 			while !parser.EOF()
 			{
-				_ = parser.getOperator()
+				parser.expect(chars: "<->,")
 				let subId = parser.getNumber()
 				var sub = programs[subId]
 				if sub == nil {

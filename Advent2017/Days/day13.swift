@@ -17,7 +17,7 @@ class Day13: Day {
 		for line in input {
 			let parser = Parser(input: line)
 			let depth  = parser.getNumber()
-			_ = parser.getOperator()
+			parser.expect(chars: ":")
 			let range = parser.getNumber()
 			
 			while layers.count < depth { layers.append(0) }

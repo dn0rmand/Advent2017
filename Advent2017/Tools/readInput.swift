@@ -93,13 +93,26 @@ class Parser {
 		return n
 	}
 	
+	func expect(chars: String) {
+		skipWhiteSpaces()
+		assert(pos < input.endIndex)
+		assert(chars.contains(input[pos]))
+		while pos < input.endIndex && chars.contains(input[pos]) {
+			pos = input.index(pos, offsetBy: 1)
+		}
+	}
+	
 	func getOperator() -> String {
 		skipWhiteSpaces()
 		assert(pos < input.endIndex)
-		assert(input[pos].isPunctuation || input[pos].isSymbol)
+		assert(input[pos] == "=" || input[pos] == "<" || input[pos] == ">" || input[pos] == "!")
 		
 		let start = pos
-		while(pos < input.endIndex && (input[pos].isPunctuation || input[pos].isSymbol)) {
+		while(pos < input.endIndex && (
+            input[pos] == "=" || 
+            input[pos] == "<" ||
+            input[pos] == ">" ||
+            input[pos] == "!")) {
 			pos = input.index(pos, offsetBy: 1)
 		}
 		let op = String(input[start..<pos])
