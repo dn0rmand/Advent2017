@@ -8,11 +8,115 @@
 import Foundation
 
 class Day20: Day {
+	struct XYZ {
+		var X: Int
+		var Y: Int
+		var Z: Int
+		
+		init(_ x: Int, _ y: Int, _ z: Int) {
+			X = x
+			Y = y
+			Z = z
+		}
+		
+		func distance() -> Int {
+			return abs(X)+abs(Y)+abs(Z)
+		}
+		
+		static func +(l: XYZ, r: XYZ) -> XYZ
+		{
+			return XYZ(l.X + r.X, l.Y + r.Y, l.Z + r.Z)
+		}
+		
+		static func *(value: XYZ, time: Int) -> XYZ
+		{
+			return XYZ(value.X * time, value.Y * time, value.Z * time)
+		}
+	}
+	
+	class Particle {
+		var id: Int
+		var position: XYZ
+		var velocity: XYZ
+		var acceleration: XYZ
+		
+		static func <(l: Particle, r: Particle) -> Bool {
+			if l.acceleration.distance() < r.acceleration.distance() {
+				return true
+			}
+			
+			if l.acceleration.distance() > r.acceleration.distance() {
+				return false
+			}
+			
+			if l.velocity.distance() < r.velocity.distance() {
+				return true
+			}
+			
+			if l.velocity.distance() > r.velocity.distance() {
+				return false
+			}
+			
+			return l.position.distance() < r.position.distance()
+		}
+		
+		static func readXYZ(parser: Parser, name: String) -> XYZ {
+			assert(parser.getToken() == name)
+			parser.expect(chars: "=<")
+			let x = parser.getNumber()
+			parser.expect(chars: ",")
+			let y = parser.getNumber()
+			parser.expect(chars: ",")
+			let z = parser.getNumber()
+			parser.expect(chars: ">,")
+			
+			return XYZ(x, y, z)
+		}
+		
+		init(id: Int, data: String) {
+			let parser = Parser(input: data)
+			
+			self.id = id
+			position = Particle.readXYZ(parser: parser, name: "p")
+			velocity = Particle.readXYZ(parser: parser, name: "v")
+			acceleration = Particle.readXYZ(parser: parser, name: "a")
+		}
+		
+		func move(t: Int) {
+			let tt = (t * (t+1)) / 2;
+
+			position = position + (velocity * t) + (acceleration * tt)
+			velocity = velocity + (acceleration * t)
+		}
+	}
+	
 	override func getDay() -> Int { return 20 }
+	
+	func load() -> [Particle] {
+		var particles = [Particle]()
+		for line in input {
+			particles.append(Particle(id: particles.count, data: line))
+		}
+		particles.sort { $0 < $1 }
+		
+		return particles
+	}
 	
 	override func part1() -> String
 	{
-		return "0"
+		let particles = load()
+		
+		let d = particles[0].acceleration.distance()
+		let i = particles.firstIndex(where: { $0.acceleration.distance() > d })!
+		
+		// only keep the ones with the same acceleration
+		var slowOnes = particles[0..<i]
+		for p in slowOnes {
+			p.move(t: 10000)
+		}
+
+		slowOnes.sort { $0 < $1 }
+		return "\(slowOnes[0].id)"
 	}
 	
 	override func part2() -> String
