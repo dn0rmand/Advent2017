@@ -8,6 +8,18 @@
 import Foundation
 import SwiftUI
 
+extension String: LocalizedError {
+	public var errorDescription: String? { return self }
+}
+
+func Assert(_ condition: Bool, _ message: String) {
+	assert(condition, message)
+}
+
+func Assert(_ condition: Bool) {
+	assert(condition)
+}
+
 class Day {
 	lazy var input: [String] = {
 		return getDayInput(day: self.getDay())

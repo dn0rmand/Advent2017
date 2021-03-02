@@ -14,7 +14,7 @@ class Day9: Day {
 	
 	func ignoreGarbage(input: String, index: String.Index) -> String.Index
 	{
-		assert(input[index] == "<")
+		Assert(input[index] == "<")
 		var pos = input.index(index, offsetBy: 1)
 		while input[pos] != ">" {
 			if input[pos] == "!" {
@@ -31,7 +31,7 @@ class Day9: Day {
 	
 	func getGroupScore(data: String, index: String.Index, value: Int) -> (String.Index, Int)
 	{
-		assert(data[index] == "{")
+		Assert(data[index] == "{")
 		var pos = data.index(index, offsetBy: 1)
 		
 		var score = value
@@ -47,7 +47,7 @@ class Day9: Day {
 			} else if c == "," {
 				pos = data.index(pos, offsetBy: 1)
 			} else {
-				assert(false, "Invalid data")
+				Assert(false, "Invalid data")
 			}
 			
 			c = data[pos]

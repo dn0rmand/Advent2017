@@ -65,8 +65,8 @@ class Parser {
 	}
 	func getToken() -> String {
 		skipWhiteSpaces()
-		assert(pos < input.endIndex)
-		assert(input[pos].isLetter)
+		Assert(pos < input.endIndex)
+		Assert(input[pos].isLetter)
 		
 		let start = pos
 		while(pos < input.endIndex && input[pos].isLetter) {
@@ -78,8 +78,8 @@ class Parser {
 	
 	func getNumber() -> Int {
 		skipWhiteSpaces()
-		assert(pos < input.endIndex)
-		assert(input[pos].isNumber || input[pos] == "-")
+		Assert(pos < input.endIndex)
+		Assert(input[pos].isNumber || input[pos] == "-")
 		
 		let start = pos
 		if input[pos] == "-" { pos = input.index(pos, offsetBy: 1) }
@@ -87,7 +87,7 @@ class Parser {
 		while(pos < input.endIndex && input[pos].isNumber) {
 			pos = input.index(pos, offsetBy: 1)
 		}
-		assert(start2 < pos) // at least 1 digit
+		Assert(start2 < pos) // at least 1 digit
 		let s = input[start..<pos]
 		let n = Int(s)!
 		return n
@@ -95,8 +95,8 @@ class Parser {
 	
 	func expect(chars: String) {
 		skipWhiteSpaces()
-		assert(pos < input.endIndex)
-		assert(chars.contains(input[pos]))
+		Assert(pos < input.endIndex)
+		Assert(chars.contains(input[pos]))
 		while pos < input.endIndex && chars.contains(input[pos]) {
 			pos = input.index(pos, offsetBy: 1)
 		}
@@ -104,8 +104,8 @@ class Parser {
 	
 	func getOperator() -> String {
 		skipWhiteSpaces()
-		assert(pos < input.endIndex)
-		assert(input[pos] == "=" || input[pos] == "<" || input[pos] == ">" || input[pos] == "!")
+		Assert(pos < input.endIndex)
+		Assert(input[pos] == "=" || input[pos] == "<" || input[pos] == ">" || input[pos] == "!")
 		
 		let start = pos
 		while(pos < input.endIndex && (

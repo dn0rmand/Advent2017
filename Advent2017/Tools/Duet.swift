@@ -104,7 +104,7 @@ enum Duet {
 					break
 			
 				default:
-					assert(false, "Invalid Opcode")
+					Assert(false, "Invalid Opcode")
 			}
 			
 			return 1
@@ -281,7 +281,7 @@ enum Duet {
 						instruction.value2 = getValue(parser)
 						break
 					default:
-						assert(false, "invalid opcode")
+						Assert(false, "invalid opcode")
 						instruction = Instruction(.nop)
 						break
 				}

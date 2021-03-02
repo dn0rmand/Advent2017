@@ -36,7 +36,7 @@ class Day8: Day {
 	}
 
 	func evaluateCondition(parser: Parser) -> Bool {
-		assert(parser.getToken() == "if")
+		Assert(parser.getToken() == "if")
 		let register = parser.getToken()
 		let op = parser.getOperator()
 		let value = parser.getNumber()
@@ -51,7 +51,7 @@ class Day8: Day {
 			case "<":  return v < value
 			case "<=": return v <= value
 			default:
-				assert(false, "Invalid operator \(op)")
+				Assert(false, "Invalid operator \(op)")
 		}
 		
 		return false
@@ -78,7 +78,7 @@ class Day8: Day {
 						r += value
 					}
 					else {
-						assert(command == "inc" )
+						Assert(command == "inc")
 					}
 					
 					setValue(register: target, value: r)

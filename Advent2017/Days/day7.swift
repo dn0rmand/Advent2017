@@ -116,7 +116,7 @@ class Day7: Day {
 			let bad = program.children.min { a, b in a.totalWeight < b.totalWeight }
 			result = bad!.weight + difference
 		} else {
-			assert(false, "Impossible!")
+			Assert(false, "Impossible!")
 		}
 		
 		return "\(result)"

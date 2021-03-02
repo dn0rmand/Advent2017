@@ -35,7 +35,7 @@ class Day11: Day {
 					case "s":           y += 2 ; break
 					case "sw": x -= 1 ; y += 1 ; break
 					case "nw": x -= 1 ; y -= 1 ; break
-					default: assert(false, "Invalid direction")
+					default: Assert(false, "Invalid direction")
 				}
 				
 				maxDistance = max(maxDistance, getDistance(x, y))

@@ -50,7 +50,7 @@ class Day16: Day {
 					break
 					
 				default:
-					assert(false, "Invalid pas de dance")
+					Assert(false, "Invalid pas de dance")
 			}
 		}
 	}
