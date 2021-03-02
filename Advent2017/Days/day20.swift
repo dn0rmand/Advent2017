@@ -27,7 +27,12 @@ class Day20: Day {
 		{
 			return XYZ(l.X + r.X, l.Y + r.Y, l.Z + r.Z)
 		}
-		
+
+		static func ==(l: XYZ, r: XYZ) -> Bool
+		{
+			return l.X == r.X && l.Y == r.Y && l.Z == r.Z
+		}
+
 		static func *(value: XYZ, time: Int) -> XYZ
 		{
 			return XYZ(value.X * time, value.Y * time, value.Z * time)
@@ -36,6 +41,7 @@ class Day20: Day {
 	
 	class Particle {
 		var id: Int
+		var dead: Bool
 		var position: XYZ
 		var velocity: XYZ
 		var acceleration: XYZ
@@ -61,7 +67,7 @@ class Day20: Day {
 		}
 		
 		static func readXYZ(parser: Parser, name: String) -> XYZ {
-			assert(parser.getToken() == name)
+			Assert(parser.getToken() == name)
 			parser.expect(chars: "=<")
 			let x = parser.getNumber()
 			parser.expect(chars: ",")
@@ -74,9 +80,11 @@ class Day20: Day {
 		}
 		
 		init(id: Int, data: String) {
+			self.id = id
+			self.dead = false
+			
 			let parser = Parser(input: data)
 			
-			self.id = id
 			position = Particle.readXYZ(parser: parser, name: "p")
 			velocity = Particle.readXYZ(parser: parser, name: "v")
 			acceleration = Particle.readXYZ(parser: parser, name: "a")
@@ -97,14 +105,14 @@ class Day20: Day {
 		for line in input {
 			particles.append(Particle(id: particles.count, data: line))
 		}
-		particles.sort { $0 < $1 }
 		
 		return particles
 	}
 	
 	override func part1() -> String
 	{
-		let particles = load()
+		var particles = load()
+		particles.sort { $0 < $1 }
 		
 		let d = particles[0].acceleration.distance()
 		let i = particles.firstIndex(where: { $0.acceleration.distance() > d })!
@@ -121,6 +129,33 @@ class Day20: Day {
 	
 	override func part2() -> String
 	{
-		return "0"
+		var particles = load()
+		var steps = 0
+		
+		while steps < 1000 {
+			var positions = [String:Particle]()
+			var hasDead = false
+			for p in particles {
+				p.move(t: 1)
+				let k = "\(p.position.X),\(p.position.Y),\(p.position.Z)"
+				if let p0 = positions[k] {
+					hasDead = true
+					p0.dead = true
+					p.dead = true
+				} else {
+					positions[k] = p
+				}
+			}
+			
+			if hasDead {
+				let parts = particles.filter { !$0.dead }
+				particles = parts
+				steps = 0
+			} else {
+				steps += 1
+			}
+		}
+		
+		return "\(particles.count)"
 	}
 }
