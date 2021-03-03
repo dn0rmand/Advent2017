@@ -19,6 +19,7 @@ protocol DuetBaseContext {
 protocol DuetValue {
 	func getValue(_ context: DuetBaseContext) -> Int
 	func setValue(_ context: DuetBaseContext, _ value: Int)
+	func toString() -> String
 }
 
 enum Duet {
@@ -26,7 +27,7 @@ enum Duet {
 	typealias Value = DuetValue
 	
 	enum OpCode {
-		case snd, set, add, mul, mod, rcv, jgz, nop
+		case snd, set, add, sub, mul, mod, rcv, jgz, jnz, nop
 	}
 
 	class NumberValue: Value {
@@ -39,6 +40,10 @@ enum Duet {
 		}
 		
 		func setValue(_ context: BaseContext, _ value: Int) {}
+		
+		func toString() -> String {
+			return "\(_value)"
+		}
 	}
 
 	class RegisterValue: Value {
@@ -58,6 +63,10 @@ enum Duet {
 		{
 			context.registers(key: register, value: value)
 		}
+		
+		func toString() -> String {
+			return register
+		}
 	}
 
 	class Instruction
@@ -65,6 +74,48 @@ enum Duet {
 		var opCode: OpCode
 		var value1: Value
 		var value2: Value
+		
+		func toString(_ context: BaseContext) -> String {
+			switch opCode {
+				case .snd:
+					return "\(context.ip()): snd <- \(value1.getValue(context))"
+					
+				case .set:
+					return "\(context.ip()): \(value1.toString()) = \(value2.getValue(context))"
+					
+				case .add:
+					return "\(context.ip()): \(value1.toString()) = \(value1.getValue(context) + value2.getValue(context))"
+					
+				case .sub:
+					return "\(context.ip()): \(value1.toString()) = \(value1.getValue(context) - value2.getValue(context))"
+
+				case .mul:
+					return "\(context.ip()): \(value1.toString()) = \(value1.getValue(context) * value2.getValue(context))"
+
+				case .mod:
+					return "\(context.ip()): \(value1.toString()) = \(value1.getValue(context) % value2.getValue(context))"
+
+				case .rcv:
+					return "\(context.ip()): rcv -> \(value1.toString())"
+					
+				case .jgz:
+					if value1.getValue(context) > 0 {
+						return "\(context.ip()): goto \(context.ip() + value2.getValue(context))"
+					} else {
+						return "\(context.ip()): nop"
+					}
+			
+				case .jnz:
+					if value1.getValue(context) != 0 {
+						return "\(context.ip()): goto \(context.ip() + value2.getValue(context))"
+					} else {
+						return "\(context.ip()): nop"
+					}
+
+				default:
+					return "nop"
+			}
+		}
 		
 		func execute(_ context: BaseContext) -> Int {
 			switch opCode {
@@ -78,6 +129,11 @@ enum Duet {
 					
 				case .add:
 					let v = value1.getValue(context) + value2.getValue(context)
+					value1.setValue(context, v)
+					break
+					
+				case .sub:
+					let v = value1.getValue(context) - value2.getValue(context)
 					value1.setValue(context, v)
 					break
 					
@@ -103,13 +159,29 @@ enum Duet {
 					}
 					break
 			
+				case .jnz:
+					if value1.getValue(context) != 0 {
+						return value2.getValue(context)
+					}
+					break
+				
+				case .nop:
+					break
+					
 				default:
 					Assert(false, "Invalid Opcode")
 			}
 			
 			return 1
 		}
-		
+
+		init(_ opCode: OpCode, _ value1: Value, _ value2: Value)
+		{
+			self.opCode = opCode
+			self.value1 = value1
+			self.value2 = value2
+		}
+
 		init(_ opCode: OpCode)
 		{
 			self.opCode = opCode
@@ -261,6 +333,11 @@ enum Duet {
 						instruction.value1 = RegisterValue(parser.getToken())
 						instruction.value2 = getValue(parser)
 						break
+					case "sub":
+						instruction = Instruction(.sub)
+						instruction.value1 = RegisterValue(parser.getToken())
+						instruction.value2 = getValue(parser)
+						break
 					case "mul":
 						instruction = Instruction(.mul)
 						instruction.value1 = RegisterValue(parser.getToken())
@@ -280,6 +357,11 @@ enum Duet {
 						instruction.value1 = getValue(parser)
 						instruction.value2 = getValue(parser)
 						break
+					case "jnz":
+						instruction = Instruction(.jnz)
+						instruction.value1 = getValue(parser)
+						instruction.value2 = getValue(parser)
+						break
 					default:
 						Assert(false, "invalid opcode")
 						instruction = Instruction(.nop)
@@ -289,13 +371,23 @@ enum Duet {
 				instructions.append(instruction)
 			}
 		}
-		
-		func run(_ context: BaseContext) {
+
+		func run(_ context: BaseContext, willExecute: (Instruction) -> ()) {
 			while context.ip() >= 0 && context.ip() < instructions.count {
 				let ip = context.ip()
-				let i = instructions[ip].execute(context)
-				context.move(offset:i)
+				let i  = instructions[ip]
+				willExecute(i)
+				let offset = i.execute(context)
+				context.move(offset:offset)
 			}
+		}
+
+		private func beforeExecute(_ instruction: Instruction) {
+			
+		}
+		
+		func run(_ context: BaseContext) {
+			run(context, willExecute: beforeExecute)
 		}
 	}
 }
