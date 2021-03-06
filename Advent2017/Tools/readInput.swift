@@ -7,6 +7,41 @@
 
 import Foundation
 
+func formatTime(time: Int) -> String {
+	var timeElapsed = time
+	let μs      = timeElapsed % 1000
+	timeElapsed = (timeElapsed - μs) / 1000
+	let ms 		= timeElapsed % 1000
+	timeElapsed = (timeElapsed - ms) / 1000
+	let seconds = timeElapsed % 60
+	timeElapsed = (timeElapsed - seconds) / 60
+	let minutes = timeElapsed % 60
+	timeElapsed = (timeElapsed - minutes) / 60
+	let hours 	= timeElapsed
+
+	var format = ""
+	if hours > 0 { format = "\(hours) hours" }
+	if minutes > 0 { format = "\(format) \(minutes) minutes" }
+	if seconds > 0 { format = "\(format) \(seconds) seconds" }
+	if ms > 0 { format = "\(format) \(ms) ms" }
+	if μs > 0 { format = "\(format) \(μs) μs" }
+	
+	if format.count == 0 { format = "so very fast!" }
+	
+	return format
+}
+
+func getDayContent(day: Int) -> String {
+	let fileName = String.localizedStringWithFormat("day%d", day)
+	if let fileUrl = Bundle.main.url(forResource: fileName, withExtension: "txt", subdirectory: "data") {
+		if let fileContent = try? String(contentsOf: fileUrl) {
+			return fileContent
+		}
+	}
+	
+	return ""
+}
+
 func getDayInput(day: Int) -> [String] {
 	var lines = [String]()
 	
@@ -91,6 +126,13 @@ class Parser {
 		let s = input[start..<pos]
 		let n = Int(s)!
 		return n
+	}
+
+	func expectOnce(char: Character) {
+		skipWhiteSpaces()
+		Assert(pos < input.endIndex)
+		Assert(input[pos] == char)
+		pos = input.index(pos, offsetBy: 1)
 	}
 	
 	func expect(chars: String) {
