@@ -167,9 +167,6 @@ enum Duet {
 				
 				case .nop:
 					break
-					
-				default:
-					Assert(false, "Invalid Opcode")
 			}
 			
 			return 1
